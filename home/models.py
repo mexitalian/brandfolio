@@ -3,9 +3,51 @@ from __future__ import absolute_import, unicode_literals
 from django.db import models
 
 from wagtail.wagtailcore.models import Page, Orderable
-from wagtail.wagtailcore.fields import RichTextField
-from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel
+from wagtail.wagtailcore.fields import RichTextField, StreamField
+from wagtail.wagtailcore import blocks
+from wagtail.wagtaildocs.blocks import DocumentChooserBlock
+from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, StreamFieldPanel
 from modelcluster.fields import ParentalKey
+
+class HeadingBlock(blocks.StructBlock):
+    title = blocks.TextBlock()
+    subtitle = blocks.RichTextBlock(required=False)
+
+    class meta:
+        icon = "title"
+
+class ActionBlock(blocks.StructBlock):
+    text = blocks.CharBlock()
+    icon = blocks.CharBlock(max_length=50, required=False, help_text="Optional: FontAwesome icon classname")
+    # below can be done automagically by parsing the url to check for /relative (local) opening local target = _parent and external target = _blank
+    target_blank = blocks.BooleanBlock(required=False, help_text="Open link in a new tab?")
+
+    class meta:
+        icon = "pick"
+
+class LinkBlock(ActionBlock):
+    url = blocks.CharBlock()
+
+    class Meta:
+        icon = "link"
+
+class LinkDocBlock(ActionBlock):
+    doc = DocumentChooserBlock()
+
+    class Meta:
+        icon = "doc-empty"
+
+class HeroBlock(blocks.StreamBlock):
+    title = blocks.TextBlock(
+        blank=False,
+        help_text="End Result Customer Wants + Specific Period Of Time + Address The Objections"
+    )
+    subtitle = blocks.RichTextBlock(blank=True)
+    links = blocks.ListBlock(LinkBlock(required=False))
+
+    class meta:
+        icon = "user"
+
 
 class Benefits(models.Model):
     icon_classname = models.CharField(max_length=50)
@@ -20,6 +62,7 @@ class Benefits(models.Model):
 
     class Meta:
         abstract = True
+
 
 class HomePageBenefits(Orderable, Benefits):
     page = ParentalKey("HomePage", related_name="solution_benefits")
@@ -46,11 +89,7 @@ class HomePageTestimonials(Orderable, Testimonials):
 
 class HomePage(Page):
 
-    headline = models.TextField(
-        blank=False,
-        help_text="End Result Customer Wants + Specific Period Of Time + Address The Objections"
-    )
-    headline_sub = RichTextField(blank=True)
+    headline = StreamField(HeroBlock())
 
     problem = RichTextField(
         blank=False,
@@ -69,14 +108,22 @@ class HomePage(Page):
 
     social_proof = RichTextField(
         blank=False,
-        help_text="Show people are using your stuff and signing up"
+        help_text="E.g. 37signals is famous for this. Basecamphq.com - “millions of people use basecamp”"
     )
 
-    cta = models.TextField(
-        blank=True,
-        help_text="Tell the customer to do something, such as asking for money (without guilt)."
-    )
-    cta_link = models.URLField(blank=True)
+    cta = StreamField([
+        ("heading", HeadingBlock(icon="title")),
+        ("actions", blocks.StreamBlock([
+            ("link", LinkBlock(icon="link")),
+            ("doc", LinkDocBlock(icon="doc-empty"))
+        ], icon="pick"))
+    ])
+    #
+    # models.TextField(
+    #     blank=True,
+    #     help_text="Tell the customer to do something, such as asking for money (without guilt)."
+    # )
+    # cta_link = models.URLField(blank=True)
 
     guarantee = models.TextField(
         blank=True,
@@ -96,13 +143,7 @@ class HomePage(Page):
 
 
     content_panels = Page.content_panels + [
-        MultiFieldPanel(
-            [
-                FieldPanel("headline"),
-                FieldPanel("headline_sub")
-            ],
-            heading="Instant Clarity Headline"
-        ),
+        StreamFieldPanel("headline"), # heading="Instant Clarity Headline"
         MultiFieldPanel(
             [
                 FieldPanel("problem")
@@ -122,20 +163,19 @@ class HomePage(Page):
             ],
             heading="Borrow Credibility"
         ),
-        FieldPanel("social_proof"),
+        MultiFieldPanel(
+            [
+                FieldPanel("social_proof")
+            ],
+            heading="Show people are using your stuff and signing up"
+        ),
         MultiFieldPanel(
             [
                 InlinePanel("testimonials", label="Testimonials"),
             ],
             heading="Proof your product works in your customers’ words."
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("cta"),
-                FieldPanel("cta_link")
-            ],
-            heading="Clear Call to take Action"
-        ),
+        StreamFieldPanel("cta"),
         FieldPanel("guarantee"),
         FieldPanel("price"),
         FieldPanel("faqs")

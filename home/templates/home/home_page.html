@@ -31,16 +31,28 @@
 
         <!-- Headline -->
         <section id="hero" class="container">
-          <header>
-            <h2>{{ page.headline }}</h2>
-          </header>
-          <p>{{ page.headline_sub|simplerichtext }}</p>
-
-          <ul class="actions">
-            <li><a href="showcase" class="button">My passion</a></li>
-            <li><a href="https://www.linkedin.com/in/mexitalian" target="_blank" class="button">and experience</a></li>
-            <li><a href="#below-the-fold" class="button">are for hire.</a></li>
-          </ul><a name="below-the-fold"></a>
+          {% for block in page.headline %}
+            {% if block.block_type == "title" %}
+              <header>
+                <h2>{{ block.value }}</h2>
+              </header>
+            {% endif %}
+            {% if block.block_type == "subtitle" %}
+              <p>{{ block.value|simplerichtext }}</p>
+            {% endif %}
+            {% if block.block_type == "links" %}
+              <ul class="actions">
+                {% for link in block.value %}
+                  <li>
+                    <a href="{{ link.url }}" class="button" {% if link.target_blank %}target="_blank"{% endif %}>
+                      {{ link.text }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endfor %}
+          <a name="below-the-fold"></a>
         </section>
       </div>
     </div>
@@ -50,7 +62,7 @@
     <div class="wrapper paddingb0">
       <div class="container">
         <header class="major">
-          {{ page.problem|simplerichtext }}
+          { page.problem|simplerichtext }
         </header>
       </div>
     </div>
@@ -84,13 +96,16 @@
     </div>
 
     <div id="promo-wrapper">
+      <!-- Borrow Credibility -->
       <div class="10u quote">
         <span class="icon inline-lg fa-quote-left pull-left"></span>
         <span class="icon inline-lg fa-quote-right pull-right"></span>
         {{ page.credibility|simplerichtext }}
       </div>
+
+      <!-- Social Proof -->
       <header class="major">
-        <h3>I've built and launched for</h3>
+        {{ page.social_proof|simplerichtext }}
       </header>
       <div class="row flex-wrap client-list center 10u 12u(narrow)">
         <img src="{% static 'images/client_ogilvy.svg' %}" alt="" class="2u 3u(mobilep)">
@@ -135,15 +150,46 @@
     </div>
 
 
-
-    <!-- USP - part one-->
-    <!-- Promotion-->
+    <!-- CTA -->
     <div id="promo-wrapper">
-      <section id="promo"><a href="curriculum-vitae.pdf" class="button"><i class="icon fa-file-pdf-o"></i></a><a href="curriculum-vitae.pdf">&nbsp; Printable CV &nbsp;</a></section>
-      <section id="promo"><a href="//bit.ly/gcm-li" class="button"><i class="icon fa-linkedin"></i></a><a href="//bit.ly/gcm-li">&nbsp; Professional network &nbsp;</a></section>
+      {% for block in page.cta %}
+        {% if block.block_type == "heading" %}
+          <header>
+            <h2>{{ block.value.title }}</h2>
+          </header>
+            {% if block.value.subtitle and block.value.subtitle.strip is not 0 %}
+              <p>{{ block.value.subtitle }}</p>
+            {% endif %}
+        {% endif %}
+        {% if block.block_type == "actions" %}
+          <section id="promo">
+            <ul class="actions">
+              {% for action in block.value %}
+                <li>
+                  <a
+                    href="{{ action.value.url }}{{ action.value.doc.url }}"
+                    {% if action.value.target_blank %} target="_blank" {% endif %}
+                    {% if action.value.doc %} title="{{ action.value.doc.title }}" {% endif %}
+                  >
+                    {% if action.value.icon %}
+                      <span class="button">
+                        <i class="icon {{ action.value.icon }}"></i>
+                      </span>
+                    {% endif %}
+                    <span>&nbsp; {{ action.value.text }} &nbsp;</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
-  <!-- Footer--><a name="contact"></a>
+
+
+  <!-- Footer-->
+  <a name="contact"></a>
   <div id="footer-wrapper">
     <div id="footer" class="container">
       <section class="12u">
