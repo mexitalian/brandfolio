@@ -16,6 +16,7 @@ def contact(request):
                 'errors': form.errors
             })
     else:
-        form = ContactForm()
-
-    return render(request, 'form/contact.html', {'form': form})
+        # form = ContactForm()
+        # return render(request, 'form/contact.html', {'form': form})
+        # return a 404, this URL is an endpoint not a standalone form
+        return render(request, '404.html')
