@@ -7,7 +7,7 @@ from .base import *
 with open('secret_key.txt') as f:
   SECRET_KEY = f.read().strip()
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
   '.charlos.co.uk',
