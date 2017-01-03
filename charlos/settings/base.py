@@ -27,6 +27,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     'home',
+    'form',
     'search',
 
     'wagtail.wagtailforms',
@@ -112,6 +113,15 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# Email settings
+# Temp: output the "email" to your console
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'testing@example.com'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+EMAIL_PORT = 1025
 
 
 # Static files (CSS, JavaScript, Images)

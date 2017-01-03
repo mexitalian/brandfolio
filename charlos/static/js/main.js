@@ -45130,33 +45130,31 @@ $(function () {
   // console.log(`skel: ${skel}`);
 
   // Handle form submissions and error states with JS/jQuery
-  // $(document).on('submit', 'form', ev => {
-  //   ev.preventDefault();
-  //   let form = ev.target;
-  //
-  //   // block form ui to prevent multiple submissions
-  //   $(form).append('<div class="ui-block-loader"><div class="icon fa-refresh"></div></div>')
-  //   // clean any previous error states
-  //   $('[name]', form).removeAttr("style")
-  //     .siblings('label').remove();
-  //
-  //   $.post(form.action, $(form).serialize(), function(data) {
-  //     // add error states
-  //     if (!data.success) {
-  //       _.each(data.errors, (err, name) => {
-  //         $(`[name=${name}]`, form).css({borderColor: 'red'})
-  //           .after(`<label for="id_${name}">${err[0]}</label>`);
-  //       });
-  //     }
-  //     else { // success!
-  //       form.reset();
-  //       $(form).siblings('p').text("Thanks! I'll be in touch shortly.");
-  //     }
-  //
-  //     // unblock ui
-  //     $('.ui-block-loader', form).remove();
-  //   });
-  // });
+  $(document).on('submit', 'form', function (ev) {
+    ev.preventDefault();
+    var form = ev.target;
+
+    // block form ui to prevent multiple submissions
+    $(form).append('<div class="ui-block-loader"><div class="icon fa-refresh"></div></div>');
+    // clean any previous error states
+    $('[name]', form).removeAttr("style").siblings('label').remove();
+
+    $.post(form.action, $(form).serialize(), function (data) {
+      // add error states
+      if (!data.success) {
+        _.each(data.errors, function (err, name) {
+          $('[name=' + name + ']', form).css({ borderColor: 'red' }).after('<label for="id_' + name + '">' + err[0] + '</label>');
+        });
+      } else {
+        // success!
+        form.reset();
+        $(form).siblings('p').text("Thanks! I'll be in touch shortly.");
+      }
+
+      // unblock ui
+      $('.ui-block-loader', form).remove();
+    });
+  });
 });
 
 },{"../_modules/link/link":6,"dropotron":1,"jquery":2,"p5":3,"skel-framework":4,"telephasic":8,"underscore":5,"util":9}],8:[function(require,module,exports){

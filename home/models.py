@@ -8,6 +8,7 @@ from wagtail.wagtailcore import blocks
 from wagtail.wagtaildocs.blocks import DocumentChooserBlock
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, StreamFieldPanel
 from modelcluster.fields import ParentalKey
+from form import forms
 
 class HeadingBlock(blocks.StructBlock):
     title = blocks.TextBlock()
@@ -139,6 +140,10 @@ class HomePage(Page):
         blank=True,
         help_text="Boost your conversions by as much as 85% with an FAQ!"
     )
+
+
+    # move the footer form to a footer snippet : eventually
+    form = forms.ContactForm()
 
 
 

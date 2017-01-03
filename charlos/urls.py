@@ -5,6 +5,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from search import views as search_views
+from form import views as form_views
 from wagtail.wagtailadmin import urls as wagtailadmin_urls
 from wagtail.wagtailcore import urls as wagtail_urls
 from wagtail.wagtaildocs import urls as wagtaildocs_urls
@@ -16,6 +17,7 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),
 
     url(r'^search/$', search_views.search, name='search'),
+    url(r'^form/contact/$', form_views.contact),
 
     url(r'', include(wagtail_urls)),
 ]

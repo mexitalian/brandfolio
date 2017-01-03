@@ -149,19 +149,23 @@
         <div class="row">
           <section class="8u 9u(narrow) 12u(narrower)">
             <h2>Get a free consultation</h2>
-            <p>Need to get unstuck? I'm here to help.</p>
-            <form id="mG61Hd" method="post" action="https://docs.google.com/forms/d/e/1FAIpQLSdHzzSuAL1GOTZk4sT01v7F2XW5i6mKtCe4iCK2mz2CRkfEhw/formResponse">
+            <p>
+              Need to get unstuck? I'd love to help. <br>
+              Describe your situtaion or request a callback.
+            </p>
+            <form action="/form/contact/" method="post" novalidate>
               <div class="row 50%">
+                {% csrf_token %}
                 <div class="6u 12u(mobile)">
-                  <input name="entry.107989516" placeholder="Name" class="text">
+                  {{ page.form.name }}
                 </div>
                 <div class="6u 12u(mobile)">
-                  <input name="entry.757416313" placeholder="Email" class="text">
+                  {{ page.form.email }}
                 </div>
               </div>
               <div class="row 50%">
                 <div class="12u">
-                  <textarea name="entry.1140880967" placeholder="Tell me a little about your situtaion… or request a callback."></textarea>
+                  {{ page.form.message }}
                 </div>
               </div>
               <div class="row 50%">
@@ -174,7 +178,6 @@
                       <input type="reset" value="Clear form">
                     </li>
                   </ul>
-                </div>
               </div>
             </form>
           </section>

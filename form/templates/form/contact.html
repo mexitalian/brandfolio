@@ -1,0 +1,27 @@
+<form action="/form/contact/" method="post" novalidate>
+  <div class="row 50%">
+    {% csrf_token %}
+    <div class="6u 12u(mobile)">
+      {{ form.name }}
+    </div>
+    <div class="6u 12u(mobile)">
+      {{ form.email }}
+    </div>
+  </div>
+  <div class="row 50%">
+    <div class="12u">
+      {{ form.message }}
+    </div>
+  </div>
+  <div class="row 50%">
+    <div class="12u">
+      <ul class="actions">
+        <li>
+          <input type="submit" value="Send Message">
+        </li>
+        <li>
+          <input type="reset" value="Clear form">
+        </li>
+      </ul>
+  </div>
+</form>
