@@ -2814,6 +2814,23 @@
   margin-top: 2em;
 }
 
+.p5container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.p5container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 #promo-opaque {
   padding: 1.75em 2.5em 1.75em 2.5em;
   display: inline-block;
@@ -2833,6 +2850,47 @@
 
 #promo-wrapper h1, #promo-wrapper h2, #promo-wrapper h3 {
   color: white;
+}
+
+.ui-block-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ui-block-loader .icon {
+  -webkit-animation: spin 1500ms linear infinite;
+          animation: spin 1500ms linear infinite;
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+.ui-block-loader .icon:before {
+  font-size: 2em;
+  display: block;
 }
 
 .wrapper.paddingb0 {
@@ -4757,26 +4815,14 @@ button:hover,
 #header-wrapper {
   position: relative;
   padding: 4em 0 2em 0;
-  background-image: url("../images/hero-photo.jpg");
-  background-image: url(../images/overlay.png), url(../images/hero-photo.jpg), -webkit-linear-gradient(75deg, #010218 15%, #3a3473 55%);
-  background-image: url(../images/overlay.png), url(../images/hero-photo.jpg), -webkit-linear-gradient(15deg, #010218 15%, #3a3473 55%);
-  background-image: url(../images/overlay.png), url(../images/hero-photo.jpg), linear-gradient(75deg, #010218 15%, #3a3473 55%);
-  background-color: #010218;
-  background-size: 100% 620%;
-  background-size: 128px 128px, 100% 620%, auto;
-  background-repeat: repeat, no-repeat, no-repeat;
 }
 
 .homepage #header-wrapper {
   padding: 10em 0 6em 0;
-  background-size: 128px 128px, 100% 100%, auto;
 }
 
-#promo-wrapper {
+#promo-wrapper, .promo-wrapper {
   position: relative;
-  background-image: url("../images/overlay.png"), url("../images/hero-photo.jpg");
-  background-size: 192px 192px, cover;
-  background-position: top left, center center;
   color: #fff;
   text-align: center;
   padding: 6em 0 6em 0;
@@ -4828,6 +4874,7 @@ button:hover,
   width: 100%;
   height: 4em;
   line-height: 4em;
+  z-index: 1;
 }
 
 #nav > ul {
@@ -4975,28 +5022,28 @@ button:hover,
 }
 
 /* Promo */
-#promo {
+.promo {
   padding: 1.75em 2.5em 1.75em 2.5em;
   display: inline-block;
   position: relative;
   z-index: 1;
 }
 
-#promo h2 {
+.promo h2 {
   color: #fff;
   display: inline-block;
   margin-right: 1em;
   font-size: 1.75em;
 }
 
-#promo .button {
+.promo .button {
   background: #fff;
   border-color: rgba(255, 255, 255, 0);
   color: #27636B;
   font-size: 1.25em;
 }
 
-#promo .button:hover {
+.promo .button:hover {
   border-color: rgba(255, 255, 255, 0.75);
   background-color: rgba(255, 255, 255, 0.15);
   color: #fff;
@@ -5030,6 +5077,10 @@ button:hover,
   margin-bottom: 3em;
 }
 
+#footer form {
+  position: relative;
+}
+
 /* Copyright */
 #copyright {
   position: relative;
@@ -5061,7 +5112,7 @@ button:hover,
   .homepage #header-wrapper {
     padding: 8em 0 4em 0;
   }
-  #promo-wrapper {
+  #promo-wrapper, .promo-wrapper {
     padding: 5em 0 5em 0;
   }
   #footer-wrapper {
@@ -5094,7 +5145,7 @@ button:hover,
   .homepage #header-wrapper {
     padding: 5em 0 4em 0;
   }
-  #promo-wrapper {
+  #promo-wrapper, .promo-wrapper {
     padding: 2em;
   }
   #footer-wrapper {
@@ -5266,7 +5317,7 @@ button:hover,
   .homepage #header-wrapper {
     padding: 3em 20px 3em 20px;
   }
-  #promo-wrapper {
+  #promo-wrapper, .promo-wrapper {
     padding: 20px;
   }
   #footer-wrapper {
@@ -5536,6 +5587,14 @@ button:hover,
   #footer header.major {
     margin-bottom: 1em;
   }
+}
+
+.night-sky {
+  background-image: -webkit-linear-gradient(180deg, #00000b 0%, #012043 55%, #00000b 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#00000b), color-stop(55%, #012043), to(#00000b));
+  background-image: -webkit-linear-gradient(top, #00000b 0%, #012043 55%, #00000b 100%);
+  background-image: linear-gradient(180deg, #00000b 0%, #012043 55%, #00000b 100%);
+  background-color: #010218;
 }
 
 /*# sourceMappingURL=main.css.map */

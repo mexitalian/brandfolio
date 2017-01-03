@@ -7,56 +7,7 @@
 
 {% block content %}
   <div id="page-wrapper">
-    <div id="header-wrapper">
-      <div id="header" class="container">
-
-        <!-- logo-->
-        <h1 id="logo"><a href="/">Charlos</a></h1>
-
-
-        <!-- nav-->
-        <div id="nav">
-          <ul>
-            <li><a href="https://github.com/mexitalian" target="_blank"><i class="icon fa-github"></i></a></li>
-            <li><a href="https://www.linkedin.com/in/mexitalian" target="_blank"><i class="icon fa-linkedin-square"></i></a></li>
-            <li class="break"><a href="#"><i class="icon fa-bars"></i> &nbsp; Sections</a>
-              <ul>
-                <li><a href="showcase"><i class="icon fa-eye"></i> Showcase</a></li>
-                <li><a href="#contact"><i class="icon fa-envelope-o"></i> Let's talk</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-
-
-        <!-- Headline -->
-        <section id="hero" class="container">
-          {% for block in page.headline %}
-            {% if block.block_type == "title" %}
-              <header>
-                <h2>{{ block.value }}</h2>
-              </header>
-            {% endif %}
-            {% if block.block_type == "subtitle" %}
-              <p>{{ block.value|simplerichtext }}</p>
-            {% endif %}
-            {% if block.block_type == "links" %}
-              <ul class="actions">
-                {% for link in block.value %}
-                  <li>
-                    <a href="{{ link.url }}" class="button" {% if link.target_blank %}target="_blank"{% endif %}>
-                      {{ link.text }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          {% endfor %}
-          <a name="below-the-fold"></a>
-        </section>
-      </div>
-    </div>
-
+    {% include "header.html" %}
 
     <!-- Problem -->
     <div class="wrapper paddingb0">
@@ -95,7 +46,8 @@
       </div>
     </div>
 
-    <div id="promo-wrapper">
+    <div id="promo-wrapper" class="night-sky">
+      <div class="p5container"></div>
       <!-- Borrow Credibility -->
       <div class="10u quote">
         <span class="icon inline-lg fa-quote-left pull-left"></span>
@@ -151,7 +103,8 @@
 
 
     <!-- CTA -->
-    <div id="promo-wrapper">
+    <div id="cta" class="promo-wrapper night-sky">
+      <div class="p5container"></div>
       {% for block in page.cta %}
         {% if block.block_type == "heading" %}
           <header>
@@ -162,7 +115,7 @@
             {% endif %}
         {% endif %}
         {% if block.block_type == "actions" %}
-          <section id="promo">
+          <section class="promo">
             <ul class="actions">
               {% for action in block.value %}
                 <li>
@@ -244,4 +197,7 @@
       </ul>
     </div>
   </div>
+{% endblock %}
+{% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/p5homepage.js' %}"></script>
 {% endblock %}
