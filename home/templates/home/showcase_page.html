@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags staticfiles charlos_tags %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+  <div id="page-wrapper">
+    {% include "header.html" %}
+
+    <div class="wrapper paddingb0">
+      <div id="main" class="container">
+        <div class="row 150">
+          <div class="container">
+            <header class="major">
+              {{ page.heading|simplerichtext }}
+            </header>
+
+            {% for project in page.get_children %}
+              <div class="row features">
+                <section class="6u 12u(mobilep)">
+                  <div class="image-wrapper">
+                    <a href="{% pageurl project %}" class="image featured">
+                      {% for obj in project.specific.images.all %}
+                        {% image obj.image original as img %}
+                        <img src="{{img.url}}" alt="{{img.alt}}">
+                      {% endfor %}
+                    </a>
+                  </div>
+                </section>
+                <section class="6u 12u(mobilep)">
+                  <h3><a href="{% pageurl project %}">{{ project.title }}</a></h3>
+                  <p>
+                    {{ project.specific.summary }}
+                    <br>
+                    {% for icon in project.specific.legend %}
+                      <sub class="icon fa-{{ icon.value }}"></sub>
+                    {% endfor %}
+                  </p>
+                </section>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+{% endblock %}
+{% block extra_js %}
+  <!-- <script type="text/javascript" src="{% static 'js/p5homepage.js' %}"></script> -->
+{% endblock %}

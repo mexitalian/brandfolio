@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags staticfiles charlos_tags %}
+
+{% block body_class %}right-sidebar{% endblock %}
+
+{% block content %}
+  <div id="page-wrapper">
+    {% include "header.html" %}
+
+    <div class="wrapper paddingb0">
+      <div id="main" class="container">
+        <div class="row 150%">
+          <div class="8u 12u(narrower)">
+            <article id="content">
+              <header>
+                {{ page.heading|simplerichtext }}
+              </header>
+
+              {% for block in page.content %}
+
+                {% if block.block_type == 'embed' %}
+                  <div class="iframe-3-2">
+                    <iframe src="{{ block.value.url }}" frameborder="0" allowfullscreen=""></iframe>
+                  </div>
+
+                {% elif block.block_type == 'image' %}
+                  {% image block.value original as img %}
+                  <div class="image featured">
+                    <img src="{{img.url}}" alt="{{img.alt}}">
+                  </div>
+
+                {% else %}
+                  {% include_block block %}
+                {% endif %}
+              {% endfor %}
+            </article>
+          </div>
+
+          <!-- Sidebar-->
+          <div class="4u 12u(narrower)">
+            <section id="sidebar">
+              {% if page.cta %}
+                <section class="12u">
+                  {% for action in page.cta.all %}
+                    <a href="{{ action.link }}" {% if action.target_blank %}target="_blank"{% endif %} class="button">
+                      {% if action.icon %}<i class="icon {{ action.icon }}"></i>{% endif %} {{ action.text }}
+                    </a>
+                  {% endfor %}
+                </section>
+              {% endif %}
+              {% if page.concept %}
+                <section>
+                  <header>
+                    <h3>Concept</h3>
+                  </header>
+                  {{ page.concept|simplerichtext }}
+                </section>
+              {% endif %}
+              {% if page.tech %}
+                <section>
+                  <header>
+                    <h3>Technical</h3>
+                  </header>
+                  {{ page.tech|simplerichtext }}
+                </section>
+              {% endif %}
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
+{% block extra_js %}
+  <!-- <script type="text/javascript" src="{% static 'js/p5homepage.js' %}"></script> -->
+{% endblock %}
