@@ -12,7 +12,6 @@ from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailembeds.blocks import EmbedBlock
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, StreamFieldPanel
 from modelcluster.fields import ParentalKey
-from form import forms
 
 
 # Blocks ------
@@ -200,7 +199,7 @@ class HomePage(Page):
     )
 
     # move the footer form to a footer snippet : eventually
-    form = forms.ContactForm()
+    # form = forms.ContactForm()
 
 
 

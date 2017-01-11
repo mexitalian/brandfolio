@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags staticfiles %}
-{% load charlos_tags %}
+{% load wagtailcore_tags staticfiles charlos_tags %}
 
 {% block body_class %}homepage{% endblock %}
 
@@ -140,66 +139,6 @@
     </div>
   </div>
 
-
-  <!-- Footer-->
-  <a name="contact"></a>
-  <div id="footer-wrapper">
-    <div id="footer" class="container">
-      <section class="12u">
-        <div class="row">
-          <section class="8u 9u(narrow) 12u(narrower)">
-            <h2>Get a free consultation</h2>
-            <p>
-              Need to get unstuck? I'd love to help. <br>
-              Describe your situtaion or request a callback.
-            </p>
-            <form action="/form/contact/" method="post" novalidate>
-              <div class="row 50%">
-                {% csrf_token %}
-                <div class="6u 12u(mobile)">
-                  {{ page.form.name }}
-                </div>
-                <div class="6u 12u(mobile)">
-                  {{ page.form.email }}
-                </div>
-              </div>
-              <div class="row 50%">
-                <div class="12u">
-                  {{ page.form.message }}
-                </div>
-              </div>
-              <div class="row 50%">
-                <div class="12u">
-                  <ul class="actions">
-                    <li>
-                      <input type="submit" value="Send Message">
-                    </li>
-                    <li>
-                      <input type="reset" value="Clear form">
-                    </li>
-                  </ul>
-              </div>
-            </form>
-          </section>
-          <section class="4u 3u(narrow) 12u(narrower)">
-            <ul class="divided icons">
-              <li class="icon fa-github"><a href="https://github.com/mexitalian" target="_blank"><span class="extra">GitHub – </span>Code</a></li>
-              <li class="icon fa-linkedin"><a href="https://www.linkedin.com/in/mexitalian" target="_blank"><span class="extra">LinkedIn – </span>Experience</a></li>
-              <li class="icon fa-stack-overflow"><a href="http://stackoverflow.com/users/1329865/mexitalian" target="_blank"><span class="extra">StackOverflow – </span>Expertise</a></li>
-              <li class="icon fa-codepen"><a href="http://codepen.io/mexitalian/" target="_blank"><span class="extra">CodePen – </span>Experiments</a></li>
-              <li class="icon fa-envelope"><a href="mailto:hello@charlos.co.uk" target="_blank">Email</a></li>
-            </ul>
-          </section>
-        </div>
-      </section>
-    </div>
-    <div id="copyright" class="container">
-      <ul class="menu">
-        <li>&copy; Giovanni Carlo Marasco – All rights reserved.</li>
-        <li><a href="http://html5up.net">Credits</a></li>
-      </ul>
-    </div>
-  </div>
 {% endblock %}
 {% block extra_js %}
   <script type="text/javascript" src="{% static 'js/p5homepage.js' %}"></script>
