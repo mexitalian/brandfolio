@@ -2,13 +2,20 @@ from __future__ import absolute_import, unicode_literals
 
 from django.db import models
 
+from wagtail.wagtailcore import blocks
 from wagtail.wagtailcore.models import Page, Orderable
 from wagtail.wagtailcore.fields import RichTextField, StreamField
-from wagtail.wagtailcore import blocks
 from wagtail.wagtaildocs.blocks import DocumentChooserBlock
+from wagtail.wagtailimages.models import Image
+from wagtail.wagtailimages.blocks import ImageChooserBlock
+from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
+from wagtail.wagtailembeds.blocks import EmbedBlock
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, StreamFieldPanel
 from modelcluster.fields import ParentalKey
 from form import forms
+
+
+# Blocks ------
 
 class HeadingBlock(blocks.StructBlock):
     title = blocks.TextBlock()
@@ -49,7 +56,6 @@ class HeroBlock(blocks.StreamBlock):
     class meta:
         icon = "user"
 
-
 class Benefits(models.Model):
     icon_classname = models.CharField(max_length=50)
     title = models.CharField(blank=False, max_length=255)
@@ -63,7 +69,6 @@ class Benefits(models.Model):
 
     class Meta:
         abstract = True
-
 
 class HomePageBenefits(Orderable, Benefits):
     page = ParentalKey("HomePage", related_name="solution_benefits")
@@ -87,7 +92,66 @@ class Testimonials(models.Model):
 class HomePageTestimonials(Orderable, Testimonials):
     page = ParentalKey("HomePage", related_name="testimonials")
 
+#   > Showcase
+class Image(models.Model):
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    panels = [
+        ImageChooserPanel("image")
+    ]
 
+    class Meta:
+        abstract = True
+
+class ProjectPageImages(Orderable, Image):
+    page = ParentalKey("ProjectPage", related_name="images")
+
+class Action(models.Model):
+    text = models.CharField(max_length=100)
+    icon = models.CharField(max_length=50, blank=True, help_text="Optional: FontAwesome icon classname")
+
+    panels = [
+        FieldPanel("text"),
+        FieldPanel("icon")
+    ]
+
+    class Meta:
+        abstract = True
+
+# ActionJS will be extended from Action once it is needed for firing JS events
+class ActionLink(Action):
+    # below can be done automagically by parsing the url to check for /relative (local) opening local target = _parent and external target = _blank
+    link = models.URLField()
+    target_blank = models.BooleanField(default=True, help_text="Open in separate tab?")
+
+    panels = Action.panels + [
+        FieldPanel("link"),
+        FieldPanel("target_blank")
+    ]
+
+class ProjectPageActions(Orderable, ActionLink):
+    page = ParentalKey("ProjectPage", related_name="cta")
+
+
+class LegendBlock(blocks.StreamBlock):
+    icon = blocks.CharBlock(max_length=50, required=False, help_text="Optional: FontAwesome icon classname")
+
+    class Meta:
+        icon = "plus"
+
+# Employ templates per block later
+# class ProjectPageEmbedBlock(EmbedBlock):
+#     class Meta:
+#         template = "blocks/project_embed.html"
+
+
+# Pages -----
+# -----------
 class HomePage(Page):
 
     headline = StreamField(HeroBlock())
@@ -119,12 +183,6 @@ class HomePage(Page):
             ("doc", LinkDocBlock(icon="doc-empty"))
         ], icon="pick"))
     ])
-    #
-    # models.TextField(
-    #     blank=True,
-    #     help_text="Tell the customer to do something, such as asking for money (without guilt)."
-    # )
-    # cta_link = models.URLField(blank=True)
 
     guarantee = models.TextField(
         blank=True,
@@ -140,7 +198,6 @@ class HomePage(Page):
         blank=True,
         help_text="Boost your conversions by as much as 85% with an FAQ!"
     )
-
 
     # move the footer form to a footer snippet : eventually
     form = forms.ContactForm()
@@ -185,4 +242,39 @@ class HomePage(Page):
         FieldPanel("price"),
         FieldPanel("faqs")
         # FieldPanel("body", classname="full")
+    ]
+
+
+class ShowcasePage(Page):
+    heading = RichTextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('heading')
+    ]
+
+
+class ProjectPage(Page):
+    heading = RichTextField()
+    summary = models.TextField(blank=True)
+    content = StreamField([
+        ("image", ImageChooserBlock()),
+        ("embed", EmbedBlock()),
+        ("blockquote", blocks.BlockQuoteBlock()),
+        ("text", blocks.RichTextBlock())
+    ], default=None)
+    concept = RichTextField(blank=True)
+    tech = RichTextField(blank=True)
+    legend = StreamField(LegendBlock(), default=None)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("heading"),
+        InlinePanel("images", label="Cover and carousel images", min_num=1),
+        FieldPanel("summary"),
+        StreamFieldPanel("content"),
+        FieldPanel("concept"),
+        FieldPanel("tech"),
+        MultiFieldPanel([
+            InlinePanel("cta", min_num=None)
+        ], heading="Call to action/s"),
+        StreamFieldPanel("legend")
     ]
