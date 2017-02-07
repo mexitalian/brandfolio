@@ -10,10 +10,6 @@ SECRET_KEY = 'j!7timy1uto$7xy%n&vtp85roo87_lalpz&@69%4g+2xkookp8'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-INSTALLED_APPS.extend([
-    'wagtail.contrib.wagtailstyleguide'
-])
-
 try:
     from .local import *
 except ImportError:
