@@ -17,6 +17,8 @@ import os
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
+# domain directory set for Dreamhost shared hosting
+DOMAIN_DIR = os.path.dirname(BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -136,7 +138,7 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'public/static')
+STATIC_ROOT = os.path.join(DOMAIN_DIR, 'public/static')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
