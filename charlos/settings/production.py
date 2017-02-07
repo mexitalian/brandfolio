@@ -14,10 +14,6 @@ ALLOWED_HOSTS = [
   '.charlos.co.uk.'
 ]
 
-STATIC_ROOT = '/home/mexitalian/sandbox.charlos.co.uk/public/static/'
-# BASE_URL = 'https://charlos.co.uk'
-
-
 try:
     from .local import *
 except ImportError:
