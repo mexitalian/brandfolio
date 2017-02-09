@@ -28,6 +28,10 @@
         {% include "footer.html" %}
 
         {# Global javascript #}
+        <script src="//cdn.jsdelivr.net/p5.js/0.5.7/p5.min.js"></script>
+        <script>
+          window.p5 || document.write("<script src='{% static 'js/p5.min.js' %}'><\/script>");
+        </script>
         <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
 
         {% block extra_js %}
