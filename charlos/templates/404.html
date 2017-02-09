@@ -1,9 +1,23 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block body_class %}template-404{% endblock %}
 
 {% block content %}
-    <h1>Page not found</h1>
+  <div id="page-wrapper">
+    {% include "header.html" %}
 
-    <h2>Sorry, this page could not be found.</h2>
+    <div class="container">
+      <header class="major">
+        <div id="canvas-container" class="center 12u" style="padding-top: 2rem;"></div>
+        <h2>Page not found</h2>
+        <h3>Sorry, this page could not be found.</h3>
+      </header>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/p5404.js' %}"></script>
 {% endblock %}
