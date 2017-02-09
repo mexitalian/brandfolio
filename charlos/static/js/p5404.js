@@ -472,6 +472,8 @@ let Invaders = function(opt = {}) {
 	window.setup = function() {
 	  let canvas = createCanvas(600, 400);
         canvas.parent('canvas-container');
+    // set smart sizing for mobile devices
+    $('#' +canvas.id()).css({maxWidth: "600px", width: "100%"});
 
 	  rectMode(CENTER);
 	  ellipseMode(CENTER);
