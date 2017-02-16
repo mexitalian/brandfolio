@@ -1,5 +1,6 @@
 # Brand CMS
-One page funnel and brand CMS built on Wagtail & Django
+One page funnel and brand CMS built on Wagtail & Django.  
+**First attempt using the Wagtail framework**
 
 ## Requirements
 - Python3
